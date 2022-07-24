@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { get } from "../../api/index";
 import { useEffect } from "react";
 
 const StudyList = () => {
@@ -8,16 +9,18 @@ const StudyList = () => {
   const [data, setData] = useState([]);
   const [searchWord, setSearchWord] = useState("");
 
-  useEffect(() => {
-    axios
-      .get("/study")
+  const getData = async () => {
+    const res = await get()
       .then((res) => {
-        const copy = [...data, ...res.data];
-        setData(copy);
+        return res;
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        throw err;
       });
+    console.log("res: ", res);
+  };
+  useEffect(() => {
+    getData();
   }, []);
 
   return (
@@ -39,6 +42,7 @@ const StudyList = () => {
             <p>분야: {data[i].section}</p>
             <p>지역: {data[i].area}</p>
             <p>#{data[i].hashtag}</p>
+
             <hr />
           </span>
         ))}

@@ -9,9 +9,9 @@ const CreateStudy = () => {
 
   const section = "어학";
   const area = "대전";
-  // const hashtag = "리액트";
-  const hashtag = ["리액트", "프론트엔드"];
-  const newArr = [...hashtag];
+  const hashtag = "리액트";
+  // const hashtag = ["리액트", "프론트엔드"];
+  const newArr = hashtag;
   console.log(newArr);
   return (
     <>
@@ -54,7 +54,7 @@ const CreateStudy = () => {
                 content: content,
                 section: section,
                 area: area,
-                hashtag: [...hashtag],
+                hashtag: hashtag,
               })
               .then(() => {
                 navigate("/study_list");
