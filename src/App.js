@@ -1,10 +1,12 @@
 import React from "react";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import LoginPage from "./pages/LoginPage";
 import { Routes, Route } from "react-router-dom";
-import RegisterPage from "./pages/RegisterPage";
-import MainPage from "./pages/MainPage";
+
+import Header from "./common/Header";
+import Footer from "./common/Footer";
+
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+
 import CreateStudy from "./pages/study/CreateStudy";
 import StudyDetail from "./pages/study/StudyDetail";
 import StudyList from "./pages/study/StudyList";
@@ -14,10 +16,10 @@ const App = () => {
     <div>
       <Header />
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/create_study" element={<CreateStudy />} />
+        <Route path="/" element={<div>메인페이지</div>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/study_create" element={<CreateStudy />} />
         <Route path="/study_detail" element={<StudyDetail />} />
         <Route path="/study_list" element={<StudyList />} />
       </Routes>
