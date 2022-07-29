@@ -19,11 +19,7 @@ const StudyCreate = () => {
     setText("");
     if (hashtag.length < 3) {
       if (text !== "") {
-        if (hashtag[0] === text) {
-          alert("중복된 해시태그입니다.");
-        } else if (hashtag[1] === text) {
-          alert("중복된 해시태그입니다.");
-        } else if (hashtag[2] === text) {
+        if (hashtag.includes(text)) {
           alert("중복된 해시태그입니다.");
         } else {
           hashtag.push(text);
