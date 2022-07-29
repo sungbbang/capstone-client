@@ -5,12 +5,14 @@ import Register from "./Register";
 
 const Login = () => {
   const navigate = useNavigate();
+
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
 
   return (
     <>
       <h4>로그인 페이지</h4>
+      <button onClick={() => navigate("/")}>메인페이지</button>
       <div>
         <label>아이디</label>
         <input onChange={(e) => setInputId(e.target.value)}></input>

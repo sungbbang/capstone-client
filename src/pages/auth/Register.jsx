@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
   const [inputPwCheck, setInputPwCheck] = useState("");
@@ -34,6 +37,7 @@ const Register = () => {
           }}
         ></input>
         <button onClick={checkPw}>회원가입</button>
+        <button onClick={() => navigate("/login")}>로그인</button>
       </div>
     </>
   );
