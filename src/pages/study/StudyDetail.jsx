@@ -13,7 +13,6 @@ const StudyDetail = () => {
     area: "",
     hashtag: "",
   });
-
   const getStudyDetail = async () => {
     const res = await get(`/study/${params.id}`)
       .then((res) => {
