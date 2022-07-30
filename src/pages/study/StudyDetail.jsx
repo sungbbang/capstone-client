@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { get } from "../../api";
+import { get, del } from "../../api";
 
 const StudyDetail = () => {
   const navigate = useNavigate();
@@ -24,6 +24,17 @@ const StudyDetail = () => {
     setStudyData(res.data);
   };
 
+  const deleteStudy = async () => {
+    const res = await del(`/study/${params.id}`);
+
+    if (res.status === 200) {
+      console.log("삭제 요청 성공");
+      alert("삭제되었습니다.");
+    }
+
+    navigate("/study_list");
+  };
+
   useEffect(() => {
     getStudyDetail();
   }, []);
@@ -39,20 +50,14 @@ const StudyDetail = () => {
           <h4># {studyData.hashtag} </h4>
         </div>
         <div>
-          <button>수정</button>
           <button
             onClick={() => {
-              axios
-                .delete(`/study/${params.id}`)
-                .then(() => {
-                  alert("삭제되었습니다.");
-                  navigate("/study_list");
-                })
-                .catch(() => console.log("error"));
+              navigate(`/study_edit/${params.id}`);
             }}
           >
-            삭제
+            수정
           </button>
+          <button onClick={deleteStudy}>삭제</button>
         </div>
       </div>
     </>

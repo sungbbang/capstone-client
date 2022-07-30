@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { post } from "../../api";
+import { patch, post } from "../../api";
 
 const StudyEdit = () => {
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ const StudyEdit = () => {
   const [hashtag, setHashtag] = useState([]);
   const params = useParams();
 
-  const createStudy = async () => {
-    await post("/study", {
+  const editStudy = async (url) => {
+    await patch(`/study/${params.id}`, {
       title: title,
       content: content,
       section: section,
@@ -46,7 +46,7 @@ const StudyEdit = () => {
   };
   return (
     <>
-      <h4>스터디 생성</h4>
+      <h4>스터디 수정</h4>
       <div className="study-title">
         <label>제목</label>
         <input
@@ -111,7 +111,7 @@ const StudyEdit = () => {
         <button onClick={handleHashTag}>작성</button>
       </div>
       <div>
-        <button onClick={createStudy}>스터디 생성</button>
+        <button onClick={editStudy}>스터디 수정</button>
       </div>
     </>
   );

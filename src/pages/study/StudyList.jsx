@@ -37,7 +37,7 @@ const StudyList = () => {
         <button onClick={() => {}}>스터디 검색</button>
         <button onClick={() => navigate("/study_create")}>스터디 생성</button>
         <h4>스터디 목록</h4>
-        {data.map((element) => (
+        {data?.map((element) => (
           <span
             key={element.id}
             onClick={() => navigate(`/study_detail/${element.id}`)}
