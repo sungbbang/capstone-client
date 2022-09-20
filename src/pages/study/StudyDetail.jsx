@@ -13,7 +13,7 @@ const StudyDetail = () => {
     area: "",
     hashtag: "",
   });
-  const getStudyDetail = async () => {
+  const loadStudyDetail = async () => {
     const res = await get(`/study/${params.id}`)
       .then((res) => {
         return res;
@@ -36,7 +36,7 @@ const StudyDetail = () => {
   };
 
   useEffect(() => {
-    getStudyDetail();
+    loadStudyDetail();
   }, []);
 
   return (

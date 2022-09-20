@@ -4,7 +4,7 @@ import { useAuthActions } from "../../api/auth";
 import { Button, Checkbox, Form, Input, Space } from "antd";
 import Navbar from "../../common/Navbar";
 
-const Login = () => {
+const Regist = () => {
   const navigate = useNavigate();
 
   const onFinish = (values) => {
@@ -61,6 +61,19 @@ const Login = () => {
             </Form.Item>
 
             <Form.Item
+              label="비밀번호 확인"
+              name="password-check"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+            >
+              <Input.Pasfsword />
+            </Form.Item>
+
+            <Form.Item
               name="remember"
               valuePropName="checked"
               wrapperCol={{
@@ -79,14 +92,6 @@ const Login = () => {
             >
               <Space direction="horizontal">
                 <Button type="primary" htmlType="submit">
-                  로그인
-                </Button>
-                <Button
-                  htmlType="button"
-                  onClick={() => {
-                    navigate("/regist");
-                  }}
-                >
                   회원가입
                 </Button>
               </Space>
@@ -98,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Regist;

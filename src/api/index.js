@@ -1,8 +1,15 @@
 import axios from "axios";
 
+const authToken = localStorage.getItem("studyCapstone");
+
 export const get = async (url, data) => {
   const res = await axios
-    .get(`${url}`, { params: data })
+    .get(`${url}`, {
+      params: data,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
     .then((res) => {
       return res;
     })
@@ -14,7 +21,11 @@ export const get = async (url, data) => {
 
 export const post = async (url, data) => {
   const res = await axios
-    .post(`${url}`, data)
+    .post(`${url}`, data, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
     .then((res) => {
       return res;
     })
@@ -26,7 +37,11 @@ export const post = async (url, data) => {
 
 export const patch = async (url, data) => {
   const res = await axios
-    .patch(`${url}`, data)
+    .patch(`${url}`, data, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
     .then((res) => {
       return res;
     })
@@ -38,7 +53,12 @@ export const patch = async (url, data) => {
 
 export const del = async (url, data) => {
   const res = await axios
-    .delete(`${url}`, { params: data })
+    .delete(`${url}`, {
+      params: data,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
     .then((res) => {
       return res;
     })
