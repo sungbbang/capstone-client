@@ -7,8 +7,13 @@ import Navbar from "../../common/Navbar";
 const Login = () => {
   const navigate = useNavigate();
 
+  const authActions = useAuthActions();
+
   const onFinish = (values) => {
     console.log("Success:", values);
+    authActions.login(values).then((res) => {
+      navigate(`/`);
+    });
   };
 
   const onFinishFailed = (errorInfo) => {

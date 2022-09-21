@@ -17,23 +17,24 @@ import StudyEdit from "./pages/study/StudyEdit";
 import "antd/dist/antd.css";
 
 const App = () => {
-  if (!localStorage.getItem("studyCapstone")) {
-    return (
-      <div>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Login />} />
-        </Routes>
-        <Footer />
-      </div>
-    );
-  }
+  // if (!localStorage.getItem("studyCapstone")) {
+  //   return (
+  //     <div>
+  //       <Header />
+  //       <Routes>
+  //         <Route path="/" element={<Login />} />
+  //       </Routes>
+  //       <Footer />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/regist" element={<Regist />} />
         <Route path="/study_create" element={<StudyCreate />} />
         <Route path="/study_detail/:id" element={<StudyDetail />} />

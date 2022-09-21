@@ -50,18 +50,35 @@ const Navbar = ({ children }) => {
               }}
             >
               <Avatar size="large" icon={<UserOutlined />} />
-              <Button
-                size="small"
-                style={{
-                  margin: "0 2px",
-                  verticalAlign: "middle",
-                }}
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                로그인하기
-              </Button>
+              {localStorage.getItem("studyCapstone") ? (
+                <Button
+                  size="small"
+                  style={{
+                    margin: "0 2px",
+                    verticalAlign: "middle",
+                  }}
+                  onClick={() => {
+                    localStorage.removeItem("studyCapstone");
+                    navigate("/login");
+                  }}
+                >
+                  로그아웃
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  style={{
+                    margin: "0 2px",
+                    verticalAlign: "middle",
+                  }}
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  로그인하기
+                </Button>
+              )}
+
               <Button
                 size="small"
                 style={{

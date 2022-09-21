@@ -6,8 +6,13 @@ import Navbar from "../../common/Navbar";
 
 const Regist = () => {
   const navigate = useNavigate();
+  const authActions = useAuthActions();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    const res = await authActions.register(values);
+
+    navigate(`/`);
+
     console.log("Success:", values);
   };
 
@@ -70,18 +75,59 @@ const Regist = () => {
                 },
               ]}
             >
-              <Input.Pasfsword />
+              <Input.Password />
             </Form.Item>
 
             <Form.Item
-              name="remember"
-              valuePropName="checked"
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
+              label="닉네임"
+              name="nickname"
+              rules={[
+                {
+                  required: true,
+                  message: "닉네임",
+                },
+              ]}
             >
-              <Checkbox>Remember me</Checkbox>
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="소개"
+              name="introduce"
+              rules={[
+                {
+                  required: true,
+                  message: "자기 소개",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="지역"
+              name="area"
+              rules={[
+                {
+                  required: true,
+                  message: "지역",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="카테고리"
+              name="category"
+              rules={[
+                {
+                  required: true,
+                  message: "카테고리",
+                },
+              ]}
+            >
+              <Input />
             </Form.Item>
 
             <Form.Item
