@@ -19,6 +19,7 @@ import {
 import Meta from "antd/lib/card/Meta";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useStudyActions } from "../api/study";
 import Navbar from "../common/Navbar";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -42,17 +43,26 @@ const items = [
 
 const App = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState();
+
+  const studyActions = useStudyActions();
+
+  const [studyGroupList, setStudyGroupList] = useState([]);
+
+  const loadStudyList = async () => {
+    setLoading(true);
+    const res = await studyActions.getStudyList();
+    if (res.status === 200) setStudyGroupList(res.data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    loadStudyList();
   }, []);
 
   return (
     <Navbar>
-      <Card
+      {/* <Card
         style={{ width: 400 }}
         loading={loading}
         cover={
@@ -74,7 +84,54 @@ const App = () => {
       >
         <Meta
           avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-          title="Card title"
+          title="스터디 제목"
+          description="This is the description"
+        />
+      </Card> */}
+      {studyGroupList.map((studyGroup) => (
+        <Card
+          key={studyGroup.id}
+          style={{ width: 400 }}
+          loading={loading}
+          cover={
+            <Image
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              loading={loading}
+            />
+          }
+          actions={[
+            <SettingOutlined key="setting" />,
+            <EditOutlined key="edit" />,
+            <EllipsisOutlined key="ellipsis" />,
+          ]}
+        >
+          <Meta
+            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+            title={studyGroup.title}
+            description={studyGroup.description}
+          />
+        </Card>
+      ))}
+      <Card
+        style={{ width: 400 }}
+        loading={loading}
+        cover={
+          <Image
+            alt="example"
+            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            loading={loading}
+          />
+        }
+        actions={[
+          <SettingOutlined key="setting" />,
+          <EditOutlined key="edit" />,
+          <EllipsisOutlined key="ellipsis" />,
+        ]}
+      >
+        <Meta
+          avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+          title="스터디 제목"
           description="This is the description"
         />
       </Card>

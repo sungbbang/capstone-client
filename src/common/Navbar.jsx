@@ -91,6 +91,21 @@ const Navbar = ({ children }) => {
               >
                 회원가입
               </Button>
+
+              {localStorage.getItem("studyCapstone") && (
+                <Button
+                  size="small"
+                  style={{
+                    margin: "0 2px",
+                    verticalAlign: "middle",
+                  }}
+                  onClick={() => {
+                    navigate("/study_create");
+                  }}
+                >
+                  스터디 만들기
+                </Button>
+              )}
             </Space>
           </div>
         </div>
