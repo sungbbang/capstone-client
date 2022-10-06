@@ -9,6 +9,11 @@ export const useAuthActions = () => {
   async function login(req) {
     const res = await post(`auth/signin`, req);
     localStorage.setItem("studyCapstone", res.data.accessToken);
+
+    if (res.status === 201) {
+      localStorage.setItem("studyCapstoneId", req.username);
+    }
+
     return res;
   }
 
