@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useRecoilValue } from "recoil";
 
 export const get = async (url, data) => {
   const res = await axios

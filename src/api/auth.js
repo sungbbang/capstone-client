@@ -1,6 +1,14 @@
+import { atom, useRecoilState } from "recoil";
 import { post } from ".";
 
+export const authTokenState = atom({
+  key: "authToken",
+  default: { username: "", authToken: "" },
+});
+
 export const useAuthActions = () => {
+  const [authToken, setAuthToken] = useRecoilState(authTokenState);
+
   return { login, register };
 
   /**
@@ -8,10 +16,14 @@ export const useAuthActions = () => {
    */
   async function login(req) {
     const res = await post(`auth/signin`, req);
-    localStorage.setItem("studyCapstone", res.data.accessToken);
-
-    if (res.status === 201) {
-      localStorage.setItem("studyCapstoneId", req.username);
+    if (res.status === 200) {
+      localStorage.setItem("studyCapstone", res.data.accessToken);
+      localStorage.setItem("studyCapstoneId", res.data.username);
+      setAuthToken({
+        ...authToken,
+        username: localStorage.getItem("studyCapstone"),
+        authToken: localStorage.getItem("studyCapstone"),
+      });
     }
 
     return res;
@@ -22,5 +34,9 @@ export const useAuthActions = () => {
    */
   async function register(req) {
     const res = await post(`auth/signup`, req);
+    return res;
+    // if (res.status === 201) {
+    //   localStorage.setItem("studyCapstoneId", req.username);
+    // }
   }
 };
