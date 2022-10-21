@@ -1,7 +1,14 @@
-import { get, patch, post } from ".";
+import { get, patch, post, del } from ".";
 
 export const useStudyActions = () => {
-  return { createStudy, updateStudy, getStudyList };
+  return {
+    createStudy,
+    updateStudy,
+    getStudyList,
+    getStudyDetail,
+    deleteStudy,
+    joinStudy,
+  };
 
   async function createStudy(req) {
     const res = await post(`Studys`, req);
@@ -18,6 +25,20 @@ export const useStudyActions = () => {
     return res;
   }
 
+  async function getStudyDetail(req) {
+    const res = await get(`Studys/${req}`, req);
+    return res;
+  }
+
+  async function deleteStudy(req) {
+    const res = await del(`/Studys/${req}`, req);
+    return res;
+  }
+
+  async function joinStudy(req, obj) {
+    const res = await patch(`/Studys/${req}/users`, obj);
+    return res;
+  }
   //   /**
   //    * @param { {username : string, password : string} }
   //    */

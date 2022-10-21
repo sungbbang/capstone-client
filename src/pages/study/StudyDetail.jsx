@@ -1,38 +1,68 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { get, del } from "../../api";
+import { Button } from "react-bootstrap";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { del, get } from "../../api";
+import { userDataState } from "../../api/auth";
+import { useStudyActions } from "../../api/study";
 
 const StudyDetail = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate("");
   const params = useParams();
-  const [studyData, setStudyData] = useState({
-    title: "",
-    content: "",
-    section: "",
-    area: "",
-    hashtag: "",
-  });
+  const studyActions = useStudyActions();
+  const [studyData, setStudyData] = useState([]);
+
+  const data = useRecoilValue(userDataState);
+
   const loadStudyDetail = async () => {
-    const res = await get(`/study/${params.id}`)
+    // await studyActions
+    //   .getStudyDetail(params.id)
+    //   .then((res) => {
+    //     setStudyData(res.data);
+    //   })
+    //   .catch((err) => {
+    //     return err;
+    //   });
+    await get(`/Studys/${params.id}`)
       .then((res) => {
-        return res;
+        setStudyData(res.data);
       })
       .catch((err) => {
         return err;
       });
-    setStudyData(res.data);
   };
 
-  const deleteStudy = async () => {
-    const res = await del(`/study/${params.id}`);
+  const delStudy = async () => {
+    await studyActions
+      .deleteStudy(params.id)
+      .then(() => {
+        alert("삭제되었습니다.");
+        navigate("/study_list");
+      })
+      .catch((err) => {
+        return err;
+      });
+    // await del(`/Studys/${params.id}`)
+    //   .then(() => {})
+    //   .catch((err) => {
+    //     return err;
+    //   });
+  };
 
-    if (res.status === 200) {
-      console.log("삭제 요청 성공");
-      alert("삭제되었습니다.");
-    }
+  const enterStudy = async () => {
+    const user = data.nickname;
 
-    navigate("/study_list");
+    await studyActions
+      .joinStudy(
+        params.id,
+        JSON.stringify({
+          users: `,${user}`,
+        })
+      )
+      .then(() => alert("참여되었습니다."))
+      .catch((err) => {
+        return err;
+      });
   };
 
   useEffect(() => {
@@ -42,23 +72,18 @@ const StudyDetail = () => {
   return (
     <>
       <div className="study-detail">
-        <div>
-          <h4>제목: {studyData.title}</h4>
-          <h4>내용: {studyData.content}</h4>
-          <h4>분야: {studyData.section} </h4>
-          <h4>지역: {studyData.area} </h4>
-          <h4># {studyData.hashtag} </h4>
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              navigate(`/study_edit/${params.id}`);
-            }}
-          >
-            수정
-          </button>
-          <button onClick={deleteStudy}>삭제</button>
-        </div>
+        <Link to="/study_list">뒤로 가기</Link>
+        <h4>제목: {studyData.title}</h4>
+        <h4>소개: {studyData.description}</h4>
+        <h4>분야: {studyData.section}</h4>
+        <h4>지역: {studyData.area}</h4>
+        <h4>#{studyData.title}</h4>
+        <Button variant="primary" onClick={enterStudy}>
+          참여
+        </Button>
+        <Button variant="danger" onClick={delStudy}>
+          삭제
+        </Button>
       </div>
     </>
   );

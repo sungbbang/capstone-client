@@ -1,13 +1,17 @@
 import { atom, useRecoilState } from "recoil";
-import { post } from ".";
+import { recoilPersist } from "recoil-persist";
+import { post, get } from ".";
 
-export const authTokenState = atom({
-  key: "authToken",
-  default: { username: "", authToken: "" },
+const { persistAtom } = recoilPersist();
+
+export const userDataState = atom({
+  key: "userDataState",
+  default: {},
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const useAuthActions = () => {
-  const [authToken, setAuthToken] = useRecoilState(authTokenState);
+  const [userData, setUserData] = useRecoilState(userDataState);
 
   return { login, register };
 
@@ -15,18 +19,13 @@ export const useAuthActions = () => {
    * @param { {username : string, password : string} }
    */
   async function login(req) {
-    const res = await post(`auth/signin`, req);
-    if (res.status === 200) {
-      localStorage.setItem("studyCapstone", res.data.accessToken);
-      localStorage.setItem("studyCapstoneId", res.data.username);
-      setAuthToken({
-        ...authToken,
-        username: localStorage.getItem("studyCapstone"),
-        authToken: localStorage.getItem("studyCapstone"),
-      });
+    const loginRes = await post(`auth/signin`, req);
+    if (loginRes.status === 201) {
+      localStorage.setItem("authToken", loginRes.data.accessToken);
+      const userDataRes = await post(`auth/user`, req);
+      setUserData(userDataRes.data);
+      console.log(userDataRes.data);
     }
-
-    return res;
   }
 
   /**
@@ -35,8 +34,5 @@ export const useAuthActions = () => {
   async function register(req) {
     const res = await post(`auth/signup`, req);
     return res;
-    // if (res.status === 201) {
-    //   localStorage.setItem("studyCapstoneId", req.username);
-    // }
   }
 };
