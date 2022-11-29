@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Col,
-  FloatingLabel,
-  Form,
-  InputGroup,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuthActions } from "../../api/auth";
 
@@ -25,8 +17,6 @@ const Regist = () => {
 
   const [show, setShow] = useState(false);
 
-  const [validated, setValidated] = useState(false);
-
   const handleSubmit = async () => {
     const userInfo = {
       username: id,
@@ -37,9 +27,7 @@ const Regist = () => {
       introduce: introduce,
     };
 
-    // TODO: 회원가입이 안 되는 경우의 조건문 작성(ex. 아이디 중복)
-    const res = await authActions.register(userInfo);
-    console.log("Success: ", JSON.parse(res.config.data));
+    await authActions.register(userInfo);
   };
 
   return (

@@ -1,46 +1,44 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { Button, Card } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
 import { useStudyActions } from "../../api/study";
 import ChatRoom from "./ChatRoom";
-import VideoChatRoom from "./VideoChatRoom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userDataState } from "../../api/auth";
 
 const chatSocket = io.connect("http://localhost:3002");
-const videoSocket = io.connect("http://localhost:3003");
 
-// todo
 const Chat = () => {
-  const navigate = useNavigate();
-
   const studyActions = useStudyActions();
 
   const data = useRecoilValue(userDataState);
 
   const userName = data.nickname;
+  let roomName;
+
   const [myStudy, setMyStudy] = useState([]);
-  const [roomName, setRoomName] = useState();
 
-  const [showChat, setShowChat] = useState(false);
-  const [showVideoChat, setShowVideoChat] = useState(false);
+  const [showChat, setShowChat] = useState(null);
 
-  const joinChatRoom = () => {
+  const joinChatRoom = (id) => {
+    let room = myStudy.filter((study) => study.id === id);
+    roomName = room[0].title;
     if (userName !== "" && roomName !== "") {
       chatSocket.emit("join_room", userName, roomName);
-      setShowChat(true);
+      setShowChat(id);
     }
   };
-  const joinVideoChatRoom = ({ id, userName, roomName }) => {
-    if (userName !== "" && roomName !== "") {
-      videoSocket.emit("join_room", userName, roomName);
-      navigate(`/chat/video:${id}`);
+
+  const loadMyStudyList = async () => {
+    const res = await studyActions.getStudyList();
+    if (res.status === 200) {
+      let result = res.data.filter((users) => users.users.includes(userName));
+      setMyStudy(result);
     }
   };
 
   useEffect(() => {
-    setMyStudy(data.study);
+    loadMyStudyList();
   }, []);
 
   return (
@@ -50,45 +48,43 @@ const Chat = () => {
           <h2>나의 스터디</h2>
           <hr />
           {myStudy.map((study) => (
-            <Card key={study.id}>
-              <Card.Header>{study.title}</Card.Header>
-              <Card.Body>
-                <Card.Title>제목: {study.title}</Card.Title>
-                <Card.Text>소개: {study.description}</Card.Text>
-                <Button
+            <div key={study.id}>
+              <Card>
+                <Card.Header>{study.title}</Card.Header>
+                <Card.Body>
+                  <Card.Title>제목: {study.title}</Card.Title>
+                  <Card.Text>소개: {study.description}</Card.Text>
+                  <Button
+                    id={study.id}
+                    variant="primary"
+                    onClick={(e) =>
+                      Number(e.target.id) === study.id
+                        ? joinChatRoom(study.id)
+                        : null
+                    }
+                  >
+                    채팅하기
+                  </Button>
+                  <Button
+                    variant="primary"
+                    onClick={() =>
+                      window.open("http://localhost:3003/", "_self")
+                    }
+                  >
+                    화상회의
+                  </Button>
+                </Card.Body>
+              </Card>
+              {showChat === study.id ? (
+                <ChatRoom
+                  socket={chatSocket}
                   id={study.id}
-                  variant="primary"
-                  onClick={() => {
-                    // setRoomName(study.title);
-                    joinChatRoom(study.id);
-                  }}
-                >
-                  채팅하기
-                </Button>
-                <Button
-                  id={study.id}
-                  variant="primary"
-                  onClick={joinVideoChatRoom}
-                >
-                  화상회의
-                </Button>
-              </Card.Body>
-            </Card>
+                  userName={userName}
+                  roomName={study.title}
+                />
+              ) : null}
+            </div>
           ))}
-          {showChat ? (
-            <ChatRoom
-              socket={chatSocket}
-              userName={userName}
-              roomName={roomName}
-            />
-          ) : null}
-          {showVideoChat ? (
-            <VideoChatRoom
-              socket={videoSocket}
-              userName={userName}
-              roomName={roomName}
-            />
-          ) : null}
         </div>
       ) : (
         alert("로그인 후 이용해주세요.")
@@ -96,5 +92,4 @@ const Chat = () => {
     </>
   );
 };
-
 export default Chat;

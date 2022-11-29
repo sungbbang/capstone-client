@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userDataState } from "../../api/auth";
 import { useStudyActions } from "../../api/study";
@@ -7,20 +8,28 @@ import MyStudyList from "./MyStudyList";
 
 const MyPage = () => {
   const userData = useRecoilValue(userDataState);
-  const userStudy = userData.study;
-  // const [myStudy, setMyStudyList] = useState([]);
+  const [myStudy, setMyStudy] = useState([]);
 
-  // const studyActions = useStudyActions();
-  // const loadStudyList = async () => {
-  //   const res = await studyActions.getStudyList();
-  //   if (res.status === 200) setMyStudyList(res.data);
-  // };
+  const studyActions = useStudyActions();
+  const loadMyStudyList = async () => {
+    const res = await studyActions.getStudyList();
+    if (res.status === 200) {
+      let result = res.data.filter((users) =>
+        users.users.includes(userData.nickname)
+      );
+      setMyStudy(result);
+    }
+  };
+
+  useEffect(() => {
+    loadMyStudyList();
+  }, []);
 
   return (
     <>
       <MyProfile userData={userData} />
       <br />
-      <MyStudyList userStudy={userStudy} />
+      <MyStudyList userStudy={myStudy} />
     </>
   );
 };

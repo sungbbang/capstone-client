@@ -15,14 +15,6 @@ const StudyDetail = () => {
   const data = useRecoilValue(userDataState);
 
   const loadStudyDetail = async () => {
-    // await studyActions
-    //   .getStudyDetail(params.id)
-    //   .then((res) => {
-    //     setStudyData(res.data);
-    //   })
-    //   .catch((err) => {
-    //     return err;
-    //   });
     await get(`/Studys/${params.id}`)
       .then((res) => {
         setStudyData(res.data);
@@ -42,23 +34,12 @@ const StudyDetail = () => {
       .catch((err) => {
         return err;
       });
-    // await del(`/Studys/${params.id}`)
-    //   .then(() => {})
-    //   .catch((err) => {
-    //     return err;
-    //   });
   };
 
   const enterStudy = async () => {
     const user = data.nickname;
-
     await studyActions
-      .joinStudy(
-        params.id,
-        JSON.stringify({
-          users: `,${user}`,
-        })
-      )
+      .joinStudy(params.id, { users: `,${user}` })
       .then(() => alert("참여되었습니다."))
       .catch((err) => {
         return err;
@@ -83,6 +64,13 @@ const StudyDetail = () => {
         </Button>
         <Button variant="danger" onClick={delStudy}>
           삭제
+        </Button>
+        {}
+        <Button
+          variant="warning"
+          onClick={() => navigate(`/study_community/${params.id}`)}
+        >
+          게시판
         </Button>
       </div>
     </>

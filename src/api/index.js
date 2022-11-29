@@ -19,7 +19,7 @@ export const get = async (url, data) => {
 
 export const post = async (url, data) => {
   const res = await axios
-    .post(`${url}`, data, {
+    .post(`/${url}`, data, {
       headers: {
         Authorization: `bearer ${localStorage.getItem("authToken")}`,
       },

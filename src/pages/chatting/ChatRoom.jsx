@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import "./chat.css";
 
-const ChatRoom = ({ socket, userName, roomName }) => {
+const ChatRoom = ({ socket, id, userName, roomName }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
+        studyId: id,
         author: userName,
         room: roomName,
         message: currentMessage,
@@ -31,14 +32,17 @@ const ChatRoom = ({ socket, userName, roomName }) => {
   }, [socket]);
 
   useEffect(() => {
-    const chats = JSON.parse(window.localStorage.getItem("chat_history"));
+    const chats = JSON.parse(window.localStorage.getItem(`chat_history${id}`));
     if (chats) {
       setMessageList(chats);
     }
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem("chat_history", JSON.stringify(messageList));
+    window.localStorage.setItem(
+      `chat_history${id}`,
+      JSON.stringify(messageList)
+    );
   }, [messageList]);
 
   return (

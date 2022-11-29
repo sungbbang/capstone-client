@@ -24,7 +24,6 @@ export const useAuthActions = () => {
       localStorage.setItem("authToken", loginRes.data.accessToken);
       const userDataRes = await post(`auth/user`, req);
       setUserData(userDataRes.data);
-      console.log(userDataRes.data);
     }
   }
 

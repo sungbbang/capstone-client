@@ -7,7 +7,7 @@ const StudyCardView = ({ study }) => {
       <Card style={{ width: "18rem", margin: "10px 10px" }}>
         <Card.Img
           variant="top"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1ffYg4ePSTDEEc_dNcQfaZvnEg6pFS2WCEQ&usqp=CAU"
+          src="https://img.freepik.com/free-photo/computer-program-coding-on-screen_53876-138060.jpg"
         />
         <CardHeader title={study.title} description={study.description} />
         <CardContent hashtag={study.hashtag} date={study.date} id={study.id} />
